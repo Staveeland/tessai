@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TessAI OAuth Callback</title>
+    <script>
+        // Function to extract query parameters
+        function getQueryParams() {
+            const params = {};
+            window.location.search.substring(1).split("&").forEach(function(part) {
+                const [key, value] = part.split("=");
+                if (key) {
+                    params[decodeURIComponent(key)] = decodeURIComponent(value);
+                }
+            });
+            return params;
+        }
+
+        window.onload = function() {
+            const params = getQueryParams();
+            const code = params['code'];
+            const state = params['state'];
+
+            if (code) {
+                // Redirect to the app with the authorization code
+                window.location = `tessai://callback?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}`;
+            } else {
+                // Handle error or missing code
+                document.body.innerHTML = "<h1>Authorization Failed</h1><p>No authorization code found.</p>";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Processing OAuth Callback...</h1>
+</body>
+</html>
